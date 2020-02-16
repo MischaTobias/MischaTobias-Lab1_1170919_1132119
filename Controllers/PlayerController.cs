@@ -9,8 +9,7 @@ namespace Lab1_1170919_1132119.Controllers
 {
     public class PlayerController : Controller
     {
-        public static List<PlayerModel> playerList = new List<PlayerModel>();
-
+        public static List<PlayerModel> playerList = new List<PlayerModel>();        
         // GET: Player
         public ActionResult Index()
         {
