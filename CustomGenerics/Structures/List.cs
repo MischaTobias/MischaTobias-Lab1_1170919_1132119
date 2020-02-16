@@ -21,9 +21,11 @@ namespace CustomGenerics.Structures
             Insert(NewNode);
         }
 
-        public void DeQueue()
+        public T DeQueue()
         {
+            var value = Get();
             Delete();
+            return value;
         }
 
         protected override void Insert(Node<T> NewNode)
@@ -31,7 +33,9 @@ namespace CustomGenerics.Structures
             if (First == null)
             {
                 First = NewNode;
-                Last = NewNode; 
+                Last = NewNode;
+                NewNode.Next = NewNode;
+                NewNode.Previous = NewNode;
             }
             else 
             {
@@ -59,22 +63,22 @@ namespace CustomGenerics.Structures
 
         protected override T Get()
         {
-            throw new NotImplementedException();
+            return Last.Value;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            throw new NotImplementedException();
+            var listCopy = this;
+            while (listCopy.First != null)
+            {
+                yield return listCopy.DeQueue();
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }
+    
