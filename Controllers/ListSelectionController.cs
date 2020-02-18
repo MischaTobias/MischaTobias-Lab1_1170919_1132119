@@ -1,46 +1,39 @@
 ﻿using System;
-using CustomGenerics.Structures;
-using Lab1_1170919_1132119.Models;
-using System.Web;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Lab1_1170919_1132119.Controllers
 {
-    public class PlayerController : Controller
+    public class ListSelectionController : Controller
     {
-        public static List<PlayerModel> playerList = new List<PlayerModel>();        
-        // GET: Player
+        // GET: ListSelection
         public ActionResult Index()
         {
             return View();
-        }        
-        
-        public ActionResult Index(bool listaArtesanal)
-        {
-            return View();
         }
 
-        // GET: Player/Details/5
-        public ActionResult Details(int id)
+        // GET: ListSelection/Details/5
+        public void Details(int id)
         {
-            return View();
+            PlayerController nextPagePlayerController = new PlayerController();
+            nextPagePlayerController.Index();
         }
 
-        // GET: Player/Create
+        // GET: ListSelection/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Player/Create
+        // POST: ListSelection/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                string listaArtesanal = collection["listaArtesanal"];
                 return RedirectToAction("Index");
             }
             catch
@@ -49,13 +42,13 @@ namespace Lab1_1170919_1132119.Controllers
             }
         }
 
-        // GET: Player/Edit/5
+        // GET: ListSelection/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Player/Edit/5
+        // POST: ListSelection/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -71,13 +64,13 @@ namespace Lab1_1170919_1132119.Controllers
             }
         }
 
-        // GET: Player/Delete/5
+        // GET: ListSelection/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Player/Delete/5
+        // POST: ListSelection/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
