@@ -100,13 +100,35 @@ namespace Lab1_1170919_1132119.Controllers
             { 
                 StreamReader streamReader = new StreamReader(collection["path"]);
                 var playerArray = (streamReader.ReadToEnd()).Split('\n');//careful with \r
-                if (useHandMadeList)
-                {
 
+                for (int i = 0; i < playerArray.Length; i++)
+                {
+                    if (playerArray[i][0] == '\n')
+                    {
+                        playerArray[i] = playerArray[i].Substring(1);
+                    }
                 }
-                else
-                {
 
+                foreach (var playerAttributes in playerArray)
+                {
+                    var playerAttributesArray = playerAttributes.Split(',');
+                    PlayerModel player = new PlayerModel
+                    {
+                        Name = playerAttributesArray[0],
+                        LastName = playerAttributesArray[1],
+                        Position = playerAttributesArray[2],
+                        Salary = Convert.ToInt32(playerAttributesArray[3]),
+                        Club = playerAttributesArray[4]
+                    };
+
+                    if (useHandMadeList)
+                    {
+                        //Enqueue
+                    }
+                    else
+                    {
+                        playersList.Add(player);
+                    }
                 }
             }
             catch 
