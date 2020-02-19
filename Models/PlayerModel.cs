@@ -16,12 +16,12 @@ namespace Lab1_1170919_1132119.Models
         public string Position { get; set; }
         public double Salary { get; set; }
         public string Club { get; set; }
-        public int Id { get; set; }
+        public int playerId { get; set; }
 
         public PlayerModel()
         {
             id++;
-            Id = id;
+            playerId = id;
         }
 
         public void Save()
@@ -43,8 +43,8 @@ namespace Lab1_1170919_1132119.Models
 
         public int CompareTo (object obj)
         {
-            var comparer = ((PlayerModel)obj).Id;
-            return comparer < 1 ? 1 : comparer == Id ? 0 : -1;
+            var comparer = ((PlayerModel)obj).playerId;
+            return comparer < 1 ? 1 : comparer == playerId ? 0 : -1;
         }
     }
 }

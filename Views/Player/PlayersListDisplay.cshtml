@@ -48,8 +48,8 @@
             @Html.DisplayFor(modelItem => item.Club)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.Id}) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", new {  id=item.playerId}) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.playerId })
         </td>
     </tr>
 }

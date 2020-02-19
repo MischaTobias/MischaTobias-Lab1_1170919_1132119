@@ -35,8 +35,6 @@ namespace Lab1_1170919_1132119.Controllers
             return RedirectToAction("PlayersListDisplay");
         }
 
-        // GET: Player/Create
-
 
         public ActionResult PlayersListDisplay()
         {
@@ -56,7 +54,6 @@ namespace Lab1_1170919_1132119.Controllers
             return View();
         }
 
-        // POST: Player/Create
         [HttpPost]
         public ActionResult IndividualCreate(FormCollection collection)
         {
@@ -138,7 +135,6 @@ namespace Lab1_1170919_1132119.Controllers
             return RedirectToAction("PlayersListDisplay");
         }
 
-        // GET: Player/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
@@ -158,14 +154,19 @@ namespace Lab1_1170919_1132119.Controllers
                 return View();
             }
         }
-       
 
-        // GET: Player/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            try
+            {
+                var position = playersList.Find(i => i.playerId == id);
+                playersList.Remove(position);
+                return RedirectToAction("PlayersListDisplay");
+            }
+            catch
+            {
+                return View("PlayersListDisplay");
+            }
         }
-
-        // POST: Player/Delete/5
     }
 }
