@@ -72,7 +72,7 @@ namespace Lab1_1170919_1132119.Controllers
                 };
 
                 if (useHandMadeList)
-                {
+                {   
                     player.Save();
                 }
                 else
@@ -135,7 +135,7 @@ namespace Lab1_1170919_1132119.Controllers
             {
 
             }
-            return View();
+            return RedirectToAction("PlayersListDisplay");
         }
 
         // GET: Player/Edit/5
@@ -144,7 +144,20 @@ namespace Lab1_1170919_1132119.Controllers
             return View();
         }
 
-        // POST: Player/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                playersList[id - 1].Club = collection["Club"];
+                playersList[id - 1].Salary = Convert.ToInt32(collection["Salary"]);
+                return RedirectToAction("PlayersListDisplay");
+            }
+            catch
+            {
+                return View();
+            }
+        }
        
 
         // GET: Player/Delete/5
@@ -154,19 +167,5 @@ namespace Lab1_1170919_1132119.Controllers
         }
 
         // POST: Player/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
