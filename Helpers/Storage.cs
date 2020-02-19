@@ -16,6 +16,6 @@ namespace Lab1_1170919_1132119.Helpers
             }
         }
 
-        public HandMadeList<PlayerModel> playerList = new HandMadeList<PlayerModel>();
+        public HandMadeList<PlayerModel> playersList = new HandMadeList<PlayerModel>();
     }
 }

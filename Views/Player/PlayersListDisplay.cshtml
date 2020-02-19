@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<Lab1_1170919_1132119.Models.PlayerModel>
 
 @{
-    ViewBag.Title = "ListaPrueba";
+    ViewBag.Title = "Players List";
 }
 
-<h2>ListaPrueba</h2>
+<h2>Players List</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New (input data)", "IndividualCreate")
+    @Html.ActionLink("Create New (input file address)", "FileCreate")
 </p>
 <table class="table">
     <tr>
