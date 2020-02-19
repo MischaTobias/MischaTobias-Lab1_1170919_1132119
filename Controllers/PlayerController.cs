@@ -35,8 +35,6 @@ namespace Lab1_1170919_1132119.Controllers
             return RedirectToAction("PlayersListDisplay");
         }
 
-        // GET: Player/Create
-
 
         public ActionResult PlayersListDisplay()
         {
@@ -56,7 +54,6 @@ namespace Lab1_1170919_1132119.Controllers
             return View();
         }
 
-        // POST: Player/Create
         [HttpPost]
         public ActionResult IndividualCreate(FormCollection collection)
         {
@@ -72,7 +69,7 @@ namespace Lab1_1170919_1132119.Controllers
                 };
 
                 if (useHandMadeList)
-                {
+                {   
                     player.Save();
                 }
                 else
@@ -100,50 +97,75 @@ namespace Lab1_1170919_1132119.Controllers
             { 
                 StreamReader streamReader = new StreamReader(collection["path"]);
                 var playerArray = (streamReader.ReadToEnd()).Split('\n');//careful with \r
-                if (useHandMadeList)
-                {
 
+                for (int i = 0; i < playerArray.Length; i++)
+                {
+                    if (playerArray[i][0] == '\n')
+                    {
+                        playerArray[i] = playerArray[i].Substring(1);
+                    }
                 }
-                else
-                {
 
+                foreach (var playerAttributes in playerArray)
+                {
+                    var playerAttributesArray = playerAttributes.Split(',');
+                    PlayerModel player = new PlayerModel
+                    {
+                        Name = playerAttributesArray[0],
+                        LastName = playerAttributesArray[1],
+                        Position = playerAttributesArray[2],
+                        Salary = Convert.ToInt32(playerAttributesArray[3]),
+                        Club = playerAttributesArray[4]
+                    };
+
+                    if (useHandMadeList)
+                    {
+                        //Enqueue
+                    }
+                    else
+                    {
+                        playersList.Add(player);
+                    }
                 }
             }
             catch 
             {
 
             }
-            return View();
+            return RedirectToAction("PlayersListDisplay");
         }
 
-        // GET: Player/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Player/Edit/5
-       
-
-        // GET: Player/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Player/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Edit(int id, FormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                playersList[id - 1].Club = collection["Club"];
+                playersList[id - 1].Salary = Convert.ToInt32(collection["Salary"]);
+                return RedirectToAction("PlayersListDisplay");
             }
             catch
             {
                 return View();
+            }
+        }
+
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                var position = playersList.Find(i => i.playerId == id);
+                playersList.Remove(position);
+                return RedirectToAction("PlayersListDisplay");
+            }
+            catch
+            {
+                return View("PlayersListDisplay");
             }
         }
     }
