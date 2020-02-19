@@ -10,11 +10,10 @@ namespace Lab1_1170919_1132119.Models
     {
         //public int Number { get; set; }
         public string Name { get; set; }
-        [Required]
+        [Required]//Displayname
         public string LastName { get; set; }
         public string Position { get; set; }
         public double Salary { get; set; }
         public string Club { get; set; }
-
     }
 }

@@ -16,7 +16,7 @@ namespace Lab1_1170919_1132119
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "ListSelection", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Player", action = "ListElection", id = UrlParameter.Optional }
             );
         }
     }

@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Lab1_1170919_1132119.Models.PlayerModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "ListaPrueba";
 }
 
-<h2>Index</h2>
+<h2>ListaPrueba</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -47,7 +47,7 @@
             @Html.DisplayFor(modelItem => item.Club)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Edit", "Edit", new {  id=item.Salary}) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>
