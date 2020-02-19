@@ -9,7 +9,7 @@ using CustomGenerics.Structures;
 
 namespace CustomGenerics.Structures
 {
-    public class List<T> : LinearDataStructureBase<T>, IEnumerable<T>
+    public class HandMadeList<T> : LinearDataStructureBase<T>, IEnumerable<T>
     {
         private CustomGenerics.Structures.Node<T> First;
         private CustomGenerics.Structures.Node<T> Last;

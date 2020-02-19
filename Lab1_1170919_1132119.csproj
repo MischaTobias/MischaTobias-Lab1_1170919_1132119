@@ -120,12 +120,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ListSelectionController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ListSelectionModel.cs" />
+    <Compile Include="Helpers\Storage.cs" />
+    <Compile Include="Models\FilePath.cs" />
+    <Compile Include="Models\HandMadeListModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -162,9 +163,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Player\Create.cshtml" />
-    <Content Include="Views\Player\Index.cshtml" />
-    <Content Include="Views\ListSelection\Index.cshtml" />
+    <Content Include="Views\Player\ListElection.cshtml" />
+    <Content Include="Views\Player\PlayersListDisplay.cshtml" />
+    <Content Include="Views\Player\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
