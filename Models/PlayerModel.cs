@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lab1_1170919_1132119.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,5 +16,17 @@ namespace Lab1_1170919_1132119.Models
         public string Position { get; set; }
         public double Salary { get; set; }
         public string Club { get; set; }
+
+        public void Save()
+        {
+            try
+            {
+                Storage.Instance.playersList.Add(this);
+            }
+            catch
+            {
+
+            }
+        }
     }
 }

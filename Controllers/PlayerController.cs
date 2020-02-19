@@ -5,12 +5,15 @@ using Lab1_1170919_1132119.Models;
 using System.Web;
 using System.Linq;
 using System.Web.Mvc;
+using System.IO;
+using Lab1_1170919_1132119.Helpers;
 
 namespace Lab1_1170919_1132119.Controllers
 {
     public class PlayerController : Controller
     {
         public static List<PlayerModel> playersList = new List<PlayerModel>();
+        public static bool useHandMadeList;
         // GET: Player
         public ActionResult ListElection()
         {
@@ -20,14 +23,14 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult ListElection(FormCollection collection)
         {
-            var useHandmadeList = collection["useHandMadeList"].Split(',')[0];
-            if (useHandmadeList.ToLower() == "true")
+            var useHMList = collection["useHandMadeList"].Split(',')[0];
+            if (useHMList.ToLower() == "true")
             {
-                //usar handmade list
+                useHandMadeList = true;
             }
             else
             {
-                //usar lista c#
+                useHandMadeList = false;
             }
             return RedirectToAction("PlayersListDisplay");
         }
@@ -37,49 +40,80 @@ namespace Lab1_1170919_1132119.Controllers
 
         public ActionResult PlayersListDisplay()
         {
-            var Pablo = new PlayerModel()
-            {
-                Name = "Pablo",
-                Salary = 1645
-            }; var Pedro = new PlayerModel()
-            {
-                Name = "Pedro",
-                Salary = 1645
-            }; var Manuel = new PlayerModel()
-            {
-                Name = "Manuel",
-                Salary = 1645
-            }; var Gerardo = new PlayerModel()
-            {
-                Name = "Gerardo",
-                Salary = 1645
-            }; var asdasd = new PlayerModel()
-            {
-                Name = "asdasd",
-                Salary = 1645
-            };
             //ctrl+r+r
-            playersList.Add(Pablo);
-            playersList.Add(Pedro);
-            playersList.Add(Gerardo);
-            playersList.Add(asdasd);
-            return View(playersList);
+            if (useHandMadeList)
+            {
+                return View(Storage.Instance.playersList);
+            }
+            else
+            {
+                return View(playersList);
+            }
+        }
+
+        public ActionResult IndividualCreate()
+        {
+            return View();
         }
 
         // POST: Player/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult IndividualCreate(FormCollection collection)
         {
             try
             {
-                // TODO: Add insert logic here
+                var player = new PlayerModel
+                {
+                    Name = collection["Name"],
+                    LastName = collection["LastName"],
+                    Position = collection["Position"],
+                    Salary = Convert.ToInt32(collection["Salary"]),
+                    Club = collection["Club"]
+                };
 
-                return RedirectToAction("Index");
+                if (useHandMadeList)
+                {
+                    player.Save();
+                }
+                else
+                {
+                    playersList.Add(player);
+                }
+
+                return RedirectToAction("PlayersListDisplay");
             }
             catch
             {
                 return View();
             }
+        }
+
+        public ActionResult FileCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult FileCreate(FormCollection collection)
+        {
+            try
+            { 
+                StreamReader streamReader = new StreamReader(collection["path"]);
+                var playerArray = (streamReader.ReadToEnd()).Split('\n');//careful with \r
+                if (useHandMadeList)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            catch 
+            {
+
+            }
+            return View();
         }
 
         // GET: Player/Edit/5

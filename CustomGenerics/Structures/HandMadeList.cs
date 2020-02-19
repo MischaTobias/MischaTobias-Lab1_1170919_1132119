@@ -14,14 +14,14 @@ namespace CustomGenerics.Structures
         private CustomGenerics.Structures.Node<T> First;
         private CustomGenerics.Structures.Node<T> Last;
 
-        public void EnQueue(T value)//Para las colas
+        public void Add(T value)//Para las colas
         {
             CustomGenerics.Structures.Node<T> NewNode = new CustomGenerics.Structures.Node<T>() 
             { Value = value, Next = null, Previous = null };
             Insert(NewNode);
         }
 
-        public T DeQueue()
+        public T GetAndDelete()
         {
             var value = Get();
             Delete();
@@ -71,7 +71,7 @@ namespace CustomGenerics.Structures
             var listCopy = this;
             while (listCopy.First != null)
             {
-                yield return listCopy.DeQueue();
+                yield return listCopy.GetAndDelete();
             }
         }
 
