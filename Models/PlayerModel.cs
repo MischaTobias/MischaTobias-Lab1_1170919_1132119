@@ -28,7 +28,7 @@ namespace Lab1_1170919_1132119.Models
         {
             try
             {
-                Storage.Instance.playersList.Add(this);
+                Storage.Instance.playersList.AddFirst(this);
             }
             catch
             {

@@ -125,9 +125,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Storage.cs" />
-    <Compile Include="Models\FilePath.cs" />
+    <Compile Include="Models\FilePathModel.cs" />
     <Compile Include="Models\HandMadeListModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
+    <Compile Include="Models\SearchFormModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
