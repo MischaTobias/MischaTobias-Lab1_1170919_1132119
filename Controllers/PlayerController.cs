@@ -12,7 +12,6 @@ namespace Lab1_1170919_1132119.Controllers
 {
     public class PlayerController : Controller
     {
-        public static List<PlayerModel> playersList = new List<PlayerModel>();
         public static bool useHandMadeList;
         // GET: Player
         public ActionResult ListElection()
@@ -41,11 +40,11 @@ namespace Lab1_1170919_1132119.Controllers
             //ctrl+r+r
             if (useHandMadeList)
             {
-                return View(Storage.Instance.playersList);
+                return View(Storage.Instance.playersHandMadeList);
             }
             else
             {
-                return View(playersList);
+                return View(Storage.Instance.playersList);
             }
         }
 
@@ -57,32 +56,25 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult IndividualCreate(FormCollection collection)
         {
-            try
+            var player = new PlayerModel
             {
-                var player = new PlayerModel
-                {
-                    Name = collection["Name"],
-                    LastName = collection["LastName"],
-                    Position = collection["Position"],
-                    Salary = Convert.ToInt32(collection["Salary"]),
-                    Club = collection["Club"]
-                };
+                Name = collection["Name"],
+                LastName = collection["LastName"],
+                Position = collection["Position"],
+                Salary = Convert.ToInt32(collection["Salary"]),
+                Club = collection["Club"]
+            };
 
-                if (useHandMadeList)
-                {   
-                    player.Save();
-                }
-                else
-                {
-                    playersList.Add(player);
-                }
-
-                return RedirectToAction("PlayersListDisplay");
-            }
-            catch
+            if (useHandMadeList)
             {
-                return View();
+                player.Save();
             }
+            else
+            {
+                Storage.Instance.playersList.AddFirst(player);
+            }
+
+            return RedirectToAction("PlayersListDisplay");
         }
 
         public ActionResult FileCreate()
@@ -93,44 +85,37 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult FileCreate(FormCollection collection)
         {
-            try
-            { 
-                StreamReader streamReader = new StreamReader(collection["path"]);
-                var playerArray = (streamReader.ReadToEnd()).Split('\n');//careful with \r
+            StreamReader streamReader = new StreamReader(collection["path"]);
+            var playerArray = (streamReader.ReadToEnd()).Split('\n');//careful with \r
 
-                for (int i = 0; i < playerArray.Length; i++)
+            for (int i = 0; i < playerArray.Length; i++)
+            {
+                if (playerArray[i][0] == '\n')
                 {
-                    if (playerArray[i][0] == '\n')
-                    {
-                        playerArray[i] = playerArray[i].Substring(1);
-                    }
-                }
-
-                foreach (var playerAttributes in playerArray)
-                {
-                    var playerAttributesArray = playerAttributes.Split(',');
-                    PlayerModel player = new PlayerModel
-                    {
-                        Name = playerAttributesArray[0],
-                        LastName = playerAttributesArray[1],
-                        Position = playerAttributesArray[2],
-                        Salary = Convert.ToInt32(playerAttributesArray[3]),
-                        Club = playerAttributesArray[4]
-                    };
-
-                    if (useHandMadeList)
-                    {
-                        //Enqueue
-                    }
-                    else
-                    {
-                        playersList.Add(player);
-                    }
+                    playerArray[i] = playerArray[i].Substring(1);
                 }
             }
-            catch 
-            {
 
+            foreach (var playerAttributes in playerArray)
+            {
+                var playerAttributesArray = playerAttributes.Split(',');
+                PlayerModel player = new PlayerModel
+                {
+                    Name = playerAttributesArray[0],
+                    LastName = playerAttributesArray[1],
+                    Position = playerAttributesArray[2],
+                    Salary = Convert.ToInt32(playerAttributesArray[3]),
+                    Club = playerAttributesArray[4]
+                };
+
+                if (useHandMadeList)
+                {
+                    //Enqueue
+                }
+                else
+                {
+                    Storage.Instance.playersList.AddFirst(player);
+                }
             }
             return RedirectToAction("PlayersListDisplay");
         }
@@ -145,8 +130,14 @@ namespace Lab1_1170919_1132119.Controllers
         {
             try
             {
-                playersList[id - 1].Club = collection["Club"];
-                playersList[id - 1].Salary = Convert.ToInt32(collection["Salary"]);
+                foreach (var item in Storage.Instance.playersList)
+                {
+                    if (item.playerId == id)
+                    {
+                        item.Club = collection["Club"];
+                        item.Salary = Convert.ToInt32(collection["Salary"]);
+                    }
+                }
                 return RedirectToAction("PlayersListDisplay");
             }
             catch
@@ -159,14 +150,19 @@ namespace Lab1_1170919_1132119.Controllers
         {
             try
             {
-                var position = playersList.Find(i => i.playerId == id);
-                playersList.Remove(position);
+                var playerToRemove = Storage.Instance.playersList.FirstOrDefault(i => i.playerId == id);
+                Storage.Instance.playersList.Remove(playerToRemove);
                 return RedirectToAction("PlayersListDisplay");
             }
             catch
             {
                 return View("PlayersListDisplay");
             }
+        }
+
+        public ActionResult SearchBy()
+        {
+            return View();
         }
     }
 }

@@ -5,8 +5,9 @@ using System.Web;
 
 namespace Lab1_1170919_1132119.Models
 {
-    public class FilePath
+    public class SearchFormModel
     {
-        public string path { get; set; }
+        public string SearchingParameter { get; set; }
+        public string SearchedValue { get; set; }
     }
 }

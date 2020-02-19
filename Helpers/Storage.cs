@@ -1,5 +1,6 @@
 ﻿using Lab1_1170919_1132119.Models;
 using CustomGenerics.Structures;
+using System.Collections.Generic;
 
 namespace Lab1_1170919_1132119.Helpers
 {
@@ -16,6 +17,7 @@ namespace Lab1_1170919_1132119.Helpers
             }
         }
 
-        public HandMadeList<PlayerModel> playersList = new HandMadeList<PlayerModel>();
+        public HandMadeList<PlayerModel> playersHandMadeList = new HandMadeList<PlayerModel>();
+        public LinkedList<PlayerModel> playersList = new LinkedList<PlayerModel>();
     }
 }
