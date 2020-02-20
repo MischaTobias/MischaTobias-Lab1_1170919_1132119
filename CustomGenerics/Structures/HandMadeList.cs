@@ -36,6 +36,16 @@ namespace CustomGenerics.Structures
             return value;
         }
 
+        public Node<T> GetT(int position)
+        {
+            Node<T> node = First;
+            for (int i = 0; i < position; i++)
+            {
+                node = node.Next;
+            }
+            return node;
+        }
+
         protected override void Insert(Node<T> NewNode)
         {
             if (First == null)
