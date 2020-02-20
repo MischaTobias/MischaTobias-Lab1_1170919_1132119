@@ -169,6 +169,8 @@
     <Content Include="Views\Player\Edit.cshtml" />
     <Content Include="Views\Player\IndividualCreate.cshtml" />
     <Content Include="Views\Player\FileCreate.cshtml" />
+    <Content Include="Views\Player\SearchBy.cshtml" />
+    <Content Include="Views\Player\PlayersListCopyDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
