@@ -41,7 +41,7 @@ namespace Lab1_1170919_1132119.Controllers
             //ctrl+r+r
             if (useHandMadeList)
             {
-                return View(Storage.Instance.playersHandMadeList);
+                return View(Storage.playersHandMadeList);
             }
             else
             {
@@ -94,7 +94,7 @@ namespace Lab1_1170919_1132119.Controllers
 
         public void HandMadeListAdd(PlayerModel player)
         {
-            player.HandMadeListSave();
+            Storage.playersHandMadeList.Add(player);
         }
 
         [HttpPost]
@@ -207,7 +207,7 @@ namespace Lab1_1170919_1132119.Controllers
             return View();
         }
 
-        public delegate List<PlayerModel> SearchFunc(string searchingParameter, string searchingValue, string range);
+        public delegate void SearchFunc(string searchingParameter, string searchingValue, string range);
 
         [HttpPost]
         public ActionResult SearchBy(FormCollection collection)
@@ -226,7 +226,7 @@ namespace Lab1_1170919_1132119.Controllers
                 {
                     searchFunction = new SearchFunc(ListSearch);
                 }
-                playerListCopy = searchFunction(searchingParameter, searchingValue, range);
+                searchFunction(searchingParameter, searchingValue, range);
             }
             catch 
             {
@@ -240,9 +240,9 @@ namespace Lab1_1170919_1132119.Controllers
             return View(playerListCopy);
         }
 
-        public List<PlayerModel> HandMadeListSearch(string searchingParameter, string searchingValue, string range)
+        public void HandMadeListSearch(string searchingParameter, string searchingValue, string range)
         {
-            if (searchingParameter.ToLower() != "Salary")
+            if (searchingParameter.ToLower() != "salary")
             {
                 switch (searchingParameter.ToLower())
                 {
@@ -260,13 +260,36 @@ namespace Lab1_1170919_1132119.Controllers
                         break;
                 }
             }
-            playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
-            return playerListCopy;
+            else
+            {
+                playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
+            }
         }
 
-        public List<PlayerModel> ListSearch(string searchingParameter, string searchingValue, string range)
+        public void ListSearch(string searchingParameter, string searchingValue, string range)
         {
-            return new List<PlayerModel>();
+            if (searchingParameter.ToLower() != "salary")
+            {
+                switch (searchingParameter.ToLower())
+                {
+                    case "name":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByName);
+                        break;
+                    case "lastname":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByLastName);
+                        break;
+                    case "position":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByPosition);
+                        break;
+                    case "club":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByClub);
+                        break;
+                }
+            }
+            else
+            {
+                playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
+            }
         }
     }
 }
