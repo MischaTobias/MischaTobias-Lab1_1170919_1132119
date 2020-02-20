@@ -215,7 +215,7 @@ namespace Lab1_1170919_1132119.Controllers
             try
             {
                 var searchingParameter = collection["SearchingParameter"];
-                var searchingValue = collection["SearchingValue"];
+                var searchingValue = collection["SearchedValue"];
                 var range = collection["Range"];
                 SearchFunc searchFunction;
                 if (useHandMadeList)
@@ -232,10 +232,10 @@ namespace Lab1_1170919_1132119.Controllers
             {
 
             }
-            return View("PlayersListCopyDisplay");
+            return View("ShowCopyList");
         }
 
-        public ActionResult PlayersListCopyDisplay()
+        public ActionResult ShowCopyList()
         {
             return View(playerListCopy);
         }

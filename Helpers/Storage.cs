@@ -95,14 +95,31 @@ namespace Lab1_1170919_1132119.Helpers
             return newList;
         }
 
-        public static List<PlayerModel> ListSearch(string searchingValue, DelInt delegateString)
+        public static List<PlayerModel> ListSearch(int searchingValue, DelInt delegateInt, string range)
         {
             List<PlayerModel> newList = new List<PlayerModel>();
             foreach (var item in Storage.Instance.playersList)
             {
-                if (delegateString(item, searchingValue))
+                switch (range)
                 {
-                    newList.Add(item);
+                    case "menor":
+                        if (delegateInt(item, searchingValue) < 0)
+                        {
+                            newList.Add(item);
+                        }
+                        break;
+                    case "igual":
+                        if (delegateInt(item, searchingValue) == 0)
+                        {
+                            newList.Add(item);
+                        }
+                        break;
+                    case "mayor":
+                        if (delegateInt(item, searchingValue) > 0)
+                        {
+                            newList.Add(item);
+                        }
+                        break;
                 }
             }
             return newList;
