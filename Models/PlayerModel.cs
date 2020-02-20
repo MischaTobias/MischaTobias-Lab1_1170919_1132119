@@ -26,14 +26,12 @@ namespace Lab1_1170919_1132119.Models
 
         public void Save()
         {
-            try
-            {
-                Storage.Instance.playersList.AddFirst(this);
-            }
-            catch
-            {
+            Storage.Instance.playersList.AddFirst(this);
+        }
 
-            }
+        public void HandMadeListSave()
+        {
+            Storage.Instance.playersHandMadeList.Add(this);
         }
 
         public static Comparison<PlayerModel> FindById = delegate (PlayerModel player1, PlayerModel player2)

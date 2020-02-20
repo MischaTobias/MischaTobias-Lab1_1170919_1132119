@@ -13,6 +13,7 @@ namespace Lab1_1170919_1132119.Controllers
     public class PlayerController : Controller
     {
         public static bool useHandMadeList;
+        public static List<PlayerModel> playerListCopy;
         // GET: Player
         public ActionResult ListElection()
         {
@@ -65,15 +66,17 @@ namespace Lab1_1170919_1132119.Controllers
                 Club = collection["Club"]
             };
 
+            AddingFunc AddingFunction;
+
             if (useHandMadeList)
             {
-                player.Save();
+                AddingFunction = new AddingFunc(HandMadeListAdd);
             }
             else
             {
-                Storage.Instance.playersList.AddFirst(player);
+                AddingFunction = new AddingFunc(ListAdd);
             }
-
+            AddingFunction(player);
             return RedirectToAction("PlayersListDisplay");
         }
 
@@ -82,11 +85,23 @@ namespace Lab1_1170919_1132119.Controllers
             return View();
         }
 
+        public delegate void AddingFunc(PlayerModel player);
+
+        public void ListAdd(PlayerModel player)
+        {
+            player.Save();
+        }
+
+        public void HandMadeListAdd(PlayerModel player)
+        {
+            player.HandMadeListSave();
+        }
+
         [HttpPost]
         public ActionResult FileCreate(FormCollection collection)
         {
             StreamReader streamReader = new StreamReader(collection["path"]);
-            var playerArray = (streamReader.ReadToEnd()).Split('\n');//careful with \r
+            var playerArray = (streamReader.ReadToEnd()).Split('\r');//careful with \r
 
             for (int i = 0; i < playerArray.Length; i++)
             {
@@ -108,14 +123,17 @@ namespace Lab1_1170919_1132119.Controllers
                     Club = playerAttributesArray[4]
                 };
 
+                AddingFunc AddingFunction;
+
                 if (useHandMadeList)
                 {
-                    //Enqueue
+                    AddingFunction = new AddingFunc(HandMadeListAdd);
                 }
                 else
                 {
-                    Storage.Instance.playersList.AddFirst(player);
+                    AddingFunction = new AddingFunc(ListAdd);
                 }
+                AddingFunction(player);
             }
             return RedirectToAction("PlayersListDisplay");
         }
@@ -128,41 +146,127 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
-            try
+            EditFunc EditFunction;
+            if (useHandMadeList)
             {
-                foreach (var item in Storage.Instance.playersList)
-                {
-                    if (item.playerId == id)
-                    {
-                        item.Club = collection["Club"];
-                        item.Salary = Convert.ToInt32(collection["Salary"]);
-                    }
-                }
-                return RedirectToAction("PlayersListDisplay");
+                EditFunction = new EditFunc(HandmadeListEdit);
             }
-            catch
+            else
             {
-                return View();
+                EditFunction = new EditFunc(ListEdit);
+            }
+            EditFunction(id, collection);
+            return RedirectToAction("PlayersListDisplay");
+        }
+
+        public delegate void EditFunc(int id, FormCollection collection);
+
+        public void ListEdit(int id, FormCollection collection)
+        {
+            foreach (var item in Storage.Instance.playersList)
+            {
+                if (item.playerId == id)
+                {
+                    item.Club = collection["Club"];
+                    item.Salary = Convert.ToInt32(collection["Salary"]);
+                }
             }
         }
 
+        public void HandmadeListEdit(int id, FormCollection collection)
+        {
+            //editing handmade list
+        }
+
+        public delegate void DeleteFunc(int id);
+
         public ActionResult Delete(int id)
         {
-            try
+            var DeleteFunction = new DeleteFunc(ListDelete);
+            if (useHandMadeList)
             {
-                var playerToRemove = Storage.Instance.playersList.FirstOrDefault(i => i.playerId == id);
-                Storage.Instance.playersList.Remove(playerToRemove);
-                return RedirectToAction("PlayersListDisplay");
+                DeleteFunction = new DeleteFunc(HandMadeListDelete);
             }
-            catch
-            {
-                return View("PlayersListDisplay");
-            }
+            DeleteFunction(id);
+            return RedirectToAction("PlayersListDisplay");
+        }
+
+        public void ListDelete(int id)
+        {
+            var playerToRemove = Storage.Instance.playersList.FirstOrDefault(i => i.playerId == id);
+            Storage.Instance.playersList.Remove(playerToRemove);
+        }
+
+        public void HandMadeListDelete(int id)
+        {
+            //delete for handmade list
         }
 
         public ActionResult SearchBy()
         {
             return View();
+        }
+
+        public delegate List<PlayerModel> SearchFunc(string searchingParameter, string searchingValue, string range);
+
+        [HttpPost]
+        public ActionResult SearchBy(FormCollection collection)
+        {
+            try
+            {
+                var searchingParameter = collection["SearchingParameter"];
+                var searchingValue = collection["SearchingValue"];
+                var range = collection["Range"];
+                SearchFunc searchFunction;
+                if (useHandMadeList)
+                {
+                    searchFunction = new SearchFunc(HandMadeListSearch);
+                }
+                else
+                {
+                    searchFunction = new SearchFunc(ListSearch);
+                }
+                playerListCopy = searchFunction(searchingParameter, searchingValue, range);
+            }
+            catch 
+            {
+
+            }
+            return View("PlayersListCopyDisplay");
+        }
+
+        public ActionResult PlayersListCopyDisplay()
+        {
+            return View(playerListCopy);
+        }
+
+        public List<PlayerModel> HandMadeListSearch(string searchingParameter, string searchingValue, string range)
+        {
+            if (searchingParameter.ToLower() != "Salary")
+            {
+                switch (searchingParameter.ToLower())
+                {
+                    case "name":
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByName);
+                        break;
+                    case "lastname":
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByLastName);
+                        break;
+                    case "position":
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByPosition);
+                        break;
+                    case "club":
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByClub);
+                        break;
+                }
+            }
+            playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
+            return playerListCopy;
+        }
+
+        public List<PlayerModel> ListSearch(string searchingParameter, string searchingValue, string range)
+        {
+            return new List<PlayerModel>();
         }
     }
 }

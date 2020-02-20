@@ -1,15 +1,13 @@
 ﻿@model IEnumerable<Lab1_1170919_1132119.Models.PlayerModel>
 
 @{
-    ViewBag.Title = "Players List";
+    ViewBag.Title = "Searched Values";
 }
 
-<h2>Players List</h2>
+<h2>Searched Values</h2>
 
 <p>
-    @Html.ActionLink("Create New (input data)", "IndividualCreate")
-    @Html.ActionLink("Create New (input file address)", "FileCreate")
-    @Html.ActionLink("Search By...", "SearchBy")
+    @Html.ActionLink("Go back to complete list", "PlayersListDisplay")
 </p>
 <table class="table">
     <tr>
@@ -27,6 +25,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Club)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.playerId)
         </th>
         <th></th>
     </tr>
@@ -49,8 +50,7 @@
             @Html.DisplayFor(modelItem => item.Club)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.playerId}) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.playerId })
+            @Html.DisplayFor(modelItem => item.playerId)
         </td>
     </tr>
 }

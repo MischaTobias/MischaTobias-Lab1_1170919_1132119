@@ -9,5 +9,6 @@ namespace Lab1_1170919_1132119.Models
     {
         public string SearchingParameter { get; set; }
         public string SearchedValue { get; set; }
+        public string Range { get; set; }
     }
 }

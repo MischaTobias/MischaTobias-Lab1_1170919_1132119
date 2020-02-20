@@ -13,6 +13,14 @@ namespace CustomGenerics.Structures
     {
         private CustomGenerics.Structures.Node<T> First;
         private CustomGenerics.Structures.Node<T> Last;
+        private int count;
+
+        public HandMadeList()
+        {
+            First = null;
+            Last = null;
+            count = 0;
+        }
 
         public void Add(T value)//Para las colas
         {
@@ -45,11 +53,12 @@ namespace CustomGenerics.Structures
                 Last.Next = First;
                 (First.Next).Previous = First;
             }
+            count++;
         }
 
         protected override void Delete()
         {
-            if (this.Count() <= 1)
+            if (this.count <= 1)
             {
                 First = null;
                 Last = null;
@@ -58,6 +67,7 @@ namespace CustomGenerics.Structures
             {
                 Last = Last.Previous;
                 Last.Next = First;
+                count--;
             }
         }
 
