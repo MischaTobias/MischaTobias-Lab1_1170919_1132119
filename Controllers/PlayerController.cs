@@ -13,7 +13,7 @@ namespace Lab1_1170919_1132119.Controllers
     public class PlayerController : Controller
     {
         public static bool useHandMadeList;
-        public static List<PlayerModel> playerListCopy;
+        public static List<PlayerModel> playerListCopy = new List<PlayerModel>();
         // GET: Player
         public ActionResult ListElection()
         {
@@ -41,7 +41,7 @@ namespace Lab1_1170919_1132119.Controllers
             //ctrl+r+r
             if (useHandMadeList)
             {
-                return View(Storage.playersHandMadeList);
+                return View(Storage.Instance.playersHandMadeList);
             }
             else
             {
@@ -94,7 +94,7 @@ namespace Lab1_1170919_1132119.Controllers
 
         public void HandMadeListAdd(PlayerModel player)
         {
-            Storage.playersHandMadeList.Add(player);
+            Storage.Instance.playersHandMadeList.Add(player);
         }
 
         [HttpPost]
@@ -232,7 +232,7 @@ namespace Lab1_1170919_1132119.Controllers
             {
 
             }
-            return View("ShowCopyList");
+            return View("ShowCopyList",playerListCopy);
         }
 
         public ActionResult ShowCopyList()

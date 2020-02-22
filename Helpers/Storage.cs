@@ -17,7 +17,7 @@ namespace Lab1_1170919_1132119.Helpers
             }
         }
 
-        public static HandMadeList<PlayerModel> playersHandMadeList = new HandMadeList<PlayerModel>();
+        public HandMadeList<PlayerModel> playersHandMadeList = new HandMadeList<PlayerModel>();
         public LinkedList<PlayerModel> playersList = new LinkedList<PlayerModel>();
 
         public delegate bool DelString(PlayerModel value1, string value2);
@@ -74,6 +74,12 @@ namespace Lab1_1170919_1132119.Helpers
 
         public static List<PlayerModel> HandMadeListSearch(string searchingValue, string range, DelString delegateString)
         {
+            List<PlayerModel> finalList = new List<PlayerModel>();
+            //CustomGenerics.Structures.Node<T> node = Storage.Instance.playersHandMadeList.First;
+            for (int i = 0; i < Storage.Instance.playersHandMadeList.count; i++)
+            {
+
+            }
             return new List<PlayerModel>();
         }
 
