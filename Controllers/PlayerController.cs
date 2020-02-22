@@ -13,7 +13,7 @@ namespace Lab1_1170919_1132119.Controllers
     public class PlayerController : Controller
     {
         public static bool useHandMadeList;
-        public static List<PlayerModel> playerListCopy;
+        public static List<PlayerModel> playerListCopy = new List<PlayerModel>();
         // GET: Player
         public ActionResult ListElection()
         {
@@ -94,7 +94,7 @@ namespace Lab1_1170919_1132119.Controllers
 
         public void HandMadeListAdd(PlayerModel player)
         {
-            player.HandMadeListSave();
+            Storage.Instance.playersHandMadeList.Add(player);
         }
 
         [HttpPost]
@@ -207,7 +207,7 @@ namespace Lab1_1170919_1132119.Controllers
             return View();
         }
 
-        public delegate List<PlayerModel> SearchFunc(string searchingParameter, string searchingValue, string range);
+        public delegate void SearchFunc(string searchingParameter, string searchingValue, string range);
 
         [HttpPost]
         public ActionResult SearchBy(FormCollection collection)
@@ -215,7 +215,7 @@ namespace Lab1_1170919_1132119.Controllers
             try
             {
                 var searchingParameter = collection["SearchingParameter"];
-                var searchingValue = collection["SearchingValue"];
+                var searchingValue = collection["SearchedValue"];
                 var range = collection["Range"];
                 SearchFunc searchFunction;
                 if (useHandMadeList)
@@ -226,23 +226,23 @@ namespace Lab1_1170919_1132119.Controllers
                 {
                     searchFunction = new SearchFunc(ListSearch);
                 }
-                playerListCopy = searchFunction(searchingParameter, searchingValue, range);
+                searchFunction(searchingParameter, searchingValue, range);
             }
             catch 
             {
 
             }
-            return View("PlayersListCopyDisplay");
+            return View("ShowCopyList",playerListCopy);
         }
 
-        public ActionResult PlayersListCopyDisplay()
+        public ActionResult ShowCopyList()
         {
             return View(playerListCopy);
         }
 
-        public List<PlayerModel> HandMadeListSearch(string searchingParameter, string searchingValue, string range)
+        public void HandMadeListSearch(string searchingParameter, string searchingValue, string range)
         {
-            if (searchingParameter.ToLower() != "Salary")
+            if (searchingParameter.ToLower() != "salary")
             {
                 switch (searchingParameter.ToLower())
                 {
@@ -260,13 +260,36 @@ namespace Lab1_1170919_1132119.Controllers
                         break;
                 }
             }
-            playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
-            return playerListCopy;
+            else
+            {
+                playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
+            }
         }
 
-        public List<PlayerModel> ListSearch(string searchingParameter, string searchingValue, string range)
+        public void ListSearch(string searchingParameter, string searchingValue, string range)
         {
-            return new List<PlayerModel>();
+            if (searchingParameter.ToLower() != "salary")
+            {
+                switch (searchingParameter.ToLower())
+                {
+                    case "name":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByName);
+                        break;
+                    case "lastname":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByLastName);
+                        break;
+                    case "position":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByPosition);
+                        break;
+                    case "club":
+                        playerListCopy = Storage.ListSearch(searchingValue, Storage.CompareByClub);
+                        break;
+                }
+            }
+            else
+            {
+                playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
+            }
         }
     }
 }

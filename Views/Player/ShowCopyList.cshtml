@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Lab1_1170919_1132119.Models.PlayerModel>
 
 @{
-    ViewBag.Title = "Searched Values";
+    ViewBag.Title = "ShowCopyList";
 }
 
-<h2>Searched Values</h2>
+<h2>ShowCopyList</h2>
 
 <p>
-    @Html.ActionLink("Go back to complete list", "PlayersListDisplay")
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
@@ -51,6 +51,11 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.playerId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>
     </tr>
 }

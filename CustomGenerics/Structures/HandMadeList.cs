@@ -11,9 +11,9 @@ namespace CustomGenerics.Structures
 {
     public class HandMadeList<T> : LinearDataStructureBase<T>, IEnumerable<T>
     {
-        private CustomGenerics.Structures.Node<T> First;
-        private CustomGenerics.Structures.Node<T> Last;
-        private int count;
+        public CustomGenerics.Structures.Node<T> First;
+        public CustomGenerics.Structures.Node<T> Last;
+        public int count;
 
         public HandMadeList()
         {
@@ -34,6 +34,16 @@ namespace CustomGenerics.Structures
             var value = Get();
             Delete();
             return value;
+        }
+
+        public Node<T> GetT(int position)
+        {
+            Node<T> node = First;
+            for (int i = 0; i < position; i++)
+            {
+                node = node.Next;
+            }
+            return node;
         }
 
         protected override void Insert(Node<T> NewNode)
