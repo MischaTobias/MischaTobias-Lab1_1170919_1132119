@@ -31,7 +31,7 @@ namespace Lab1_1170919_1132119.Models
 
         public void HandMadeListSave()
         {
-            Storage.playersHandMadeList.Add(this);
+            Storage.Instance.playersHandMadeList.Add(this);
         }
 
         public static Comparison<PlayerModel> FindById = delegate (PlayerModel player1, PlayerModel player2)

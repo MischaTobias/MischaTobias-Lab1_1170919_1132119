@@ -11,9 +11,9 @@ namespace CustomGenerics.Structures
 {
     public class HandMadeList<T> : LinearDataStructureBase<T>, IEnumerable<T>
     {
-        private CustomGenerics.Structures.Node<T> First;
-        private CustomGenerics.Structures.Node<T> Last;
-        private int count;
+        public CustomGenerics.Structures.Node<T> First;
+        public CustomGenerics.Structures.Node<T> Last;
+        public int count;
 
         public HandMadeList()
         {
