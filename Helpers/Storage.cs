@@ -72,12 +72,12 @@ namespace Lab1_1170919_1132119.Helpers
             return -1;
         }
 
-        public static List<PlayerModel> HandMadeListSearch(string searchingValue, string range, DelString delegateString)
+        public static List<PlayerModel> HandMadeListSearch(string searchingValue, DelString delegateString)
         {
             List<PlayerModel> finalList = new List<PlayerModel>();
-            //CustomGenerics.Structures.Node<T> node = Storage.Instance.playersHandMadeList.First;
             foreach (var item in Storage.Instance.playersHandMadeList)
-            {
+            { CustomGenerics.Structures.Node<PlayerModel> node = Storage.Instance.playersHandMadeList.First;
+
                 if (delegateString(item, searchingValue))
                 {
                     finalList.Add(item);
@@ -86,7 +86,7 @@ namespace Lab1_1170919_1132119.Helpers
             return new List<PlayerModel>();
         }
 
-        public static List<PlayerModel> HandMadeListSearchSalary(string searchingValue, string range, DelInt delInt)
+        public static List<PlayerModel> HandMadeListSearch(string searchingValue, string range, DelInt delInt)
         {
             return new List<PlayerModel>();
         }
