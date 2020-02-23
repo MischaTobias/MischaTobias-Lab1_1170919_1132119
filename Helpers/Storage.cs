@@ -76,9 +76,12 @@ namespace Lab1_1170919_1132119.Helpers
         {
             List<PlayerModel> finalList = new List<PlayerModel>();
             //CustomGenerics.Structures.Node<T> node = Storage.Instance.playersHandMadeList.First;
-            for (int i = 0; i < Storage.Instance.playersHandMadeList.count; i++)
+            foreach (var item in Storage.Instance.playersHandMadeList)
             {
-
+                if (delegateString(item, searchingValue))
+                {
+                    finalList.Add(item);
+                }
             }
             return new List<PlayerModel>();
         }
