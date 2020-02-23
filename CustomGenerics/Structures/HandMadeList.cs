@@ -68,7 +68,7 @@ namespace CustomGenerics.Structures
 
         protected override void Delete()
         {
-            if (this.count <= 1)
+            if (this.count < 1)
             {
                 First = null;
                 Last = null;
