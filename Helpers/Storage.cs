@@ -75,6 +75,7 @@ namespace Lab1_1170919_1132119.Helpers
         public static List<PlayerModel> HandMadeListSearch(string searchingValue, DelString delegateString)
         {
             List<PlayerModel> finalList = new List<PlayerModel>();
+<<<<<<< HEAD
             foreach (var item in Storage.Instance.playersHandMadeList)
             { CustomGenerics.Structures.Node<PlayerModel> node = Storage.Instance.playersHandMadeList.First;
 
@@ -82,6 +83,15 @@ namespace Lab1_1170919_1132119.Helpers
                 {
                     finalList.Add(item);
                 }
+=======
+            CustomGenerics.Structures.Node<PlayerModel> node = Storage.Instance.playersHandMadeList.First;
+            for (int i = 0; i < Storage.Instance.playersHandMadeList.count; i++)
+            {
+                //if (delegateString(item, searchingValue))
+                //{
+                //    finalList.Add(item);
+                //}
+>>>>>>> timer
             }
             return new List<PlayerModel>();
         }
