@@ -286,22 +286,22 @@ namespace Lab1_1170919_1132119.Controllers
                 switch (searchingParameter.ToLower())
                 {
                     case "name":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByName);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByName);
                         break;
                     case "lastname":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByLastName);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByLastName);
                         break;
                     case "position":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByPosition);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByPosition);
                         break;
                     case "club":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByClub);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByClub);
                         break;
                 }
             }
             else
             {
-                playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareBySalary);
+                playerListCopy = Storage.HandMadeListSearchSalary(int.Parse(searchingValue), range, Storage.CompareBySalary);
             }
         }
 
@@ -327,7 +327,7 @@ namespace Lab1_1170919_1132119.Controllers
             }
             else
             {
-                playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareBySalary);
+                playerListCopy = Storage.ListSearch(int.Parse(searchingValue), Storage.CompareBySalary, range);
             }
         }
     }

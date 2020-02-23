@@ -72,23 +72,48 @@ namespace Lab1_1170919_1132119.Helpers
             return -1;
         }
 
-        public static List<PlayerModel> HandMadeListSearch(string searchingValue, DelString delegateString)
+        public static List<PlayerModel> HandMadeListSearch(string searchingValue, string range, DelString delegateString)
         {
             List<PlayerModel> finalList = new List<PlayerModel>();
-            CustomGenerics.Structures.Node<PlayerModel> node = Storage.Instance.playersHandMadeList.First;
-            for (int i = 0; i < Storage.Instance.playersHandMadeList.count; i++)
-            {
-                //if (delegateString(item, searchingValue))
-                //{
-                //    finalList.Add(item);
-                //}
+            //CustomGenerics.Structures.Node<PlayerModel> node = Storage.Instance.playersHandMadeList.First;
+            foreach (var item in Storage.Instance.playersHandMadeList)
+            { 
+                if (delegateString(item, searchingValue))
+                {
+                    finalList.Add(item);
+                }
             }
-            return new List<PlayerModel>();
+            return finalList;
         }
 
-        public static List<PlayerModel> HandMadeListSearch(string searchingValue, string range, DelInt delInt)
+        public static List<PlayerModel> HandMadeListSearchSalary(int searchingValue, string range, DelInt delInt)
         {
-            return new List<PlayerModel>();
+            List<PlayerModel> finalList = new List<PlayerModel>();
+            foreach (var item in Storage.Instance.playersHandMadeList)
+            {
+                switch (range)
+                {
+                    case "menor":
+                        if (delInt(item, searchingValue) < 0)
+                        {
+                            finalList.Add(item);
+                        }
+                        break;
+                    case "igual":
+                        if (delInt(item, searchingValue) == 0)
+                        {
+                            finalList.Add(item);
+                        }
+                        break;
+                    case "mayor":
+                        if (delInt(item, searchingValue) > 0)
+                        {
+                            finalList.Add(item);
+                        }
+                        break;
+                }
+            }
+            return finalList;
         }
 
         public static List<PlayerModel> ListSearch(string searchingValue, DelString delegateString)
