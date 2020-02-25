@@ -16,7 +16,6 @@ namespace Lab1_1170919_1132119.Helpers
                 return _instance;
             }
         }
-		//oaaaaaaaaaaaa
         public HandMadeList<PlayerModel> playersHandMadeList = new HandMadeList<PlayerModel>();
         public LinkedList<PlayerModel> playersList = new LinkedList<PlayerModel>();
 
