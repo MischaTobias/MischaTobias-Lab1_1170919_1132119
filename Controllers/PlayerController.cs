@@ -230,7 +230,7 @@ namespace Lab1_1170919_1132119.Controllers
 
         public void HandMadeListDelete(int id)
         {
-            //delete for handmade list
+            Storage.Instance.playersHandMadeList.GetAndDelete();
         }
 
         public ActionResult SearchBy()
