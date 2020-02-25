@@ -288,7 +288,7 @@ namespace Lab1_1170919_1132119.Controllers
             }
             else
             {
-                playerListCopy = Storage.HandMadeListSearchSalary(searchingValue, range, Storage.CompareBySalary);
+                playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareBySalary);
             }
         }
     }

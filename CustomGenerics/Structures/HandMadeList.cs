@@ -52,8 +52,8 @@ namespace CustomGenerics.Structures
             {
                 First = NewNode;
                 Last = NewNode;
-                NewNode.Next = NewNode;
-                NewNode.Previous = NewNode;
+                NewNode.Next = null;
+                NewNode.Previous = null;
             }
             else 
             {
@@ -89,9 +89,11 @@ namespace CustomGenerics.Structures
         public IEnumerator<T> GetEnumerator()
         {
             var listCopy = this;
-            while (listCopy.First != null)
+            var current = listCopy.First;
+            while (current != null)
             {
-                yield return listCopy.GetAndDelete();
+                yield return current.Value;
+                current = current.Next;
             }
         }
 
