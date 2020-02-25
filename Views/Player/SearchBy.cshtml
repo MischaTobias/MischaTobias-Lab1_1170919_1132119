@@ -5,12 +5,12 @@
 }
 
 <h2>SearchBy</h2>
+@Html.Raw(TempData["msg"])
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>SearchFormModel</h4>
         <hr />

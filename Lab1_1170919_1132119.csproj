@@ -171,6 +171,7 @@
     <Content Include="Views\Player\FileCreate.cshtml" />
     <Content Include="Views\Player\SearchBy.cshtml" />
     <Content Include="Views\Player\ShowCopyList.cshtml" />
+    <Content Include="Views\Player\Time.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using CustomGenerics.Structures;
 using Lab1_1170919_1132119.Models;
@@ -12,9 +13,19 @@ namespace Lab1_1170919_1132119.Controllers
 {
     public class PlayerController : Controller
     {
+        public static Stopwatch aTimer = new Stopwatch();
+        static TimeSpan ts;
+        public static string elapsedTime;
+
         public static bool useHandMadeList;
         public static List<PlayerModel> playerListCopy = new List<PlayerModel>();
-        // GET: Player
+        
+        public ActionResult Time()
+        {
+            string time = "<script>alert('El tiempo de ejecucion fue: " + elapsedTime + "');</script>";
+            TempData["msg"] = time;
+            return View();
+        }
         public ActionResult ListElection()
         {
             return View();
@@ -57,6 +68,8 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult IndividualCreate(FormCollection collection)
         {
+            aTimer.Restart();
+            aTimer.Start();
             var player = new PlayerModel
             {
                 Name = collection["Name"],
@@ -77,7 +90,10 @@ namespace Lab1_1170919_1132119.Controllers
                 AddingFunction = new AddingFunc(ListAdd);
             }
             AddingFunction(player);
-            return RedirectToAction("PlayersListDisplay");
+            aTimer.Stop();
+            ts = aTimer.Elapsed;
+            elapsedTime = String.Format("{0} h, {1} min, {2} s, {3} ms", ts.Hours, ts.Minutes, ts.Seconds, ts.TotalMilliseconds * 10000);
+            return RedirectToAction("Time");
         }
 
         public ActionResult FileCreate()
@@ -100,6 +116,8 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult FileCreate(FormCollection collection)
         {
+            aTimer.Restart();
+            aTimer.Start();
             StreamReader streamReader = new StreamReader(collection["path"]);
             var playerArray = (streamReader.ReadToEnd()).Split('\r');//careful with \r
 
@@ -135,7 +153,10 @@ namespace Lab1_1170919_1132119.Controllers
                 }
                 AddingFunction(player);
             }
-            return RedirectToAction("PlayersListDisplay");
+            aTimer.Stop();
+            ts = aTimer.Elapsed;
+            elapsedTime = String.Format("{0} h, {1} min, {2} s, {3} ms", ts.Hours, ts.Minutes, ts.Seconds, ts.TotalMilliseconds * 10000);
+            return RedirectToAction("Time");
         }
 
         public ActionResult Edit(int id)
@@ -146,6 +167,8 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
+            aTimer.Restart();
+            aTimer.Start();
             EditFunc EditFunction;
             if (useHandMadeList)
             {
@@ -156,7 +179,10 @@ namespace Lab1_1170919_1132119.Controllers
                 EditFunction = new EditFunc(ListEdit);
             }
             EditFunction(id, collection);
-            return RedirectToAction("PlayersListDisplay");
+            aTimer.Stop();
+            ts = aTimer.Elapsed;
+            elapsedTime = String.Format("{0} h, {1} min, {2} s, {3} ms", ts.Hours, ts.Minutes, ts.Seconds, ts.TotalMilliseconds * 10000);
+            return RedirectToAction("Time");
         }
 
         public delegate void EditFunc(int id, FormCollection collection);
@@ -182,13 +208,18 @@ namespace Lab1_1170919_1132119.Controllers
 
         public ActionResult Delete(int id)
         {
+            aTimer.Restart();
+            aTimer.Start();
             var DeleteFunction = new DeleteFunc(ListDelete);
             if (useHandMadeList)
             {
                 DeleteFunction = new DeleteFunc(HandMadeListDelete);
             }
             DeleteFunction(id);
-            return RedirectToAction("PlayersListDisplay");
+            aTimer.Stop();
+            ts = aTimer.Elapsed;
+            elapsedTime = String.Format("{0} h, {1} min, {2} s, {3} ms", ts.Hours, ts.Minutes, ts.Seconds, ts.TotalMilliseconds * 10000);
+            return RedirectToAction("Time");
         }
 
         public void ListDelete(int id)
@@ -212,6 +243,8 @@ namespace Lab1_1170919_1132119.Controllers
         [HttpPost]
         public ActionResult SearchBy(FormCollection collection)
         {
+            aTimer.Restart();
+            aTimer.Start();
             try
             {
                 var searchingParameter = collection["SearchingParameter"];
@@ -232,6 +265,12 @@ namespace Lab1_1170919_1132119.Controllers
             {
 
             }
+            aTimer.Stop();
+            ts = aTimer.Elapsed;
+            elapsedTime = String.Format("{0} h, {1} min, {2} s, {3} ms", ts.Hours, ts.Minutes, ts.Seconds, ts.TotalMilliseconds * 10000);
+
+            string time = "<script>alert('El tiempo de ejecucion fue: " + elapsedTime + "');</script>";
+            TempData["msg"] = time;
             return View("ShowCopyList",playerListCopy);
         }
 
@@ -247,22 +286,22 @@ namespace Lab1_1170919_1132119.Controllers
                 switch (searchingParameter.ToLower())
                 {
                     case "name":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByName);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByName);
                         break;
                     case "lastname":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByLastName);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByLastName);
                         break;
                     case "position":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByPosition);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByPosition);
                         break;
                     case "club":
-                        playerListCopy = Storage.HandMadeListSearch(searchingValue, Storage.CompareByClub);
+                        playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareByClub);
                         break;
                 }
             }
             else
             {
-                playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareBySalary);
+                playerListCopy = Storage.HandMadeListSearchSalary(int.Parse(searchingValue), range, Storage.CompareBySalary);
             }
         }
 
@@ -288,7 +327,7 @@ namespace Lab1_1170919_1132119.Controllers
             }
             else
             {
-                playerListCopy = Storage.HandMadeListSearch(searchingValue, range, Storage.CompareBySalary);
+                playerListCopy = Storage.ListSearch(int.Parse(searchingValue), Storage.CompareBySalary, range);
             }
         }
     }
